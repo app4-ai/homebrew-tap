@@ -1,0 +1,16 @@
+# Internal working files — never published (org rule)
+CLAUDE.md
+AGENTS.md
+.claude/
+.worktrees/
+.mcp.json
+opencode.json
+docs/specs/
+docs/plans/
+memory/
+.scratch*/
+
+# Editors / OS
+.DS_Store
+.idea/
+.vscode/
