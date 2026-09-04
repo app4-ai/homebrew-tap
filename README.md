@@ -29,8 +29,7 @@ brew install app4          # alias of app4-cli
 | `app4-studio` | cask    | `App4 Studio.app`, depends on `app4-cli` |
 
 Formula and cask files are published here automatically by the release
-pipelines of the respective projects; the first public release is being
-prepared.
+pipelines of the respective projects.
 
 ## Update
 

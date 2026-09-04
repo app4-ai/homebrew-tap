@@ -1,0 +1,31 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  formula:
+    name: formula (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Register this checkout as the tap
+        run: |
+          tap_dir="$(brew --repository)/Library/Taps/app4-ai/homebrew-tap"
+          mkdir -p "$(dirname "$tap_dir")"
+          ln -s "$GITHUB_WORKSPACE" "$tap_dir"
+      - name: Style and audit
+        run: |
+          brew style app4-ai/tap
+          brew audit --strict app4-ai/tap/app4-cli
+      - name: Install and test
+        run: |
+          brew install --verbose app4-ai/tap/app4-cli
+          app4 --version
+          brew test app4-ai/tap/app4-cli
