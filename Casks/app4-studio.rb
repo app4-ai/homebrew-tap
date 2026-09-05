@@ -10,12 +10,11 @@ cask "app4-studio" do
   url "https://s3.app4.studio/app4-studio/smart-studio/desktop/App4Studio-0.1.129.dmg"
   name "App4 Studio"
   desc "Desktop IDE for building App4 applications with AI workers"
-  homepage "https://app4.dev"
-
-  depends_on formula: "app4-cli"
-  depends_on macos: ">= :monterey"
+  homepage "https://app4.dev/"
 
   auto_updates false
+  depends_on formula: "app4-cli"
+  depends_on macos: :monterey
 
   app "App4 Studio.app"
 
