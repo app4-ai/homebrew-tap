@@ -7,7 +7,7 @@ cask "app4-studio" do
   version "0.1.129"
   sha256 "6dd23623251a9b90c4336f51b1a68eae1b57e1e9b3bee62f3e27a6ea66273769"
 
-  url "https://s3.app4.studio/app4-studio/smart-studio/desktop/App4Studio-0.1.129.dmg"
+  url "https://s3.app4.studio/app4-studio/smart-studio/desktop/App4Studio-#{version}.dmg"
   name "App4 Studio"
   desc "Desktop IDE for building App4 applications with AI workers"
   homepage "https://app4.dev/"
