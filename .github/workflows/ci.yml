@@ -31,3 +31,25 @@ jobs:
           brew install --verbose app4-ai/tap/app4-cli
           app4 --version
           brew test app4-ai/tap/app4-cli
+
+  cask:
+    name: cask (macos-latest)
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+      - name: Register this checkout as the tap
+        run: |
+          tap_dir="$(brew --repository)/Library/Taps/app4-ai/homebrew-tap"
+          mkdir -p "$(dirname "$tap_dir")"
+          ln -s "$GITHUB_WORKSPACE" "$tap_dir"
+      - name: Audit and install
+        run: |
+          if [ ! -f Casks/app4-studio.rb ]; then echo "no cask yet"; exit 0; fi
+          brew style app4-ai/tap
+          brew audit --strict --cask app4-ai/tap/app4-studio
+          brew install --cask app4-ai/tap/app4-studio
+          test -d "/Applications/App4 Studio.app"
+          spctl -a -vv "/Applications/App4 Studio.app"
+          app4 --version
