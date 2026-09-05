@@ -5,20 +5,23 @@ the `app4` command-line interface and the App4 Studio desktop application.
 
 ## Install
 
-```sh
-# CLI (macOS and Linux)
-brew install app4-ai/tap/app4-cli
-
-# Studio desktop app (macOS) — installs the CLI as a dependency
-brew install --cask app4-ai/tap/app4-studio
-```
-
-Both commands add this tap on first use. Once the tap is added, the short
-names work too:
+Homebrew 6 asks you to trust a third-party tap once; after that the short
+names work:
 
 ```sh
 brew tap app4-ai/tap
-brew install app4          # alias of app4-cli
+brew trust app4-ai/tap
+
+brew install --cask app4-studio   # App4 Studio desktop app (macOS) + the CLI
+brew install app4-cli             # CLI only (macOS and Linux); `app4` is an alias
+```
+
+Without trusting the whole tap, the fully qualified names install and trust
+one item at a time:
+
+```sh
+brew install app4-ai/tap/app4-cli
+brew install --cask app4-ai/tap/app4-studio   # after the line above
 ```
 
 ## What is in the tap
@@ -29,7 +32,7 @@ brew install app4          # alias of app4-cli
 | `app4-studio` | cask    | `App4 Studio.app`, depends on `app4-cli` |
 
 Formula and cask files are published here automatically by the release
-pipelines of the respective projects.
+pipelines of the respective projects; the tap's CI installs both on every change.
 
 ## Update
 
