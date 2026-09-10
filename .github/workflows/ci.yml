@@ -53,3 +53,57 @@ jobs:
           test -d "/Applications/App4 Studio.app"
           spctl -a -vv "/Applications/App4 Studio.app"
           app4 --version
+
+  worker:
+    name: worker (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@1f8e202ffddf94def7f42f6fa3a482e821489f9c # 2026.07.10.1
+      - name: Register this checkout as the tap
+        run: |
+          tap_dir="$(brew --repository)/Library/Taps/app4-ai/homebrew-tap"
+          mkdir -p "$(dirname "$tap_dir")"
+          ln -s "$GITHUB_WORKSPACE" "$tap_dir"
+      - name: Assert the runner architecture the bundle ships for
+        run: |
+          case "$(uname -s)-$(uname -m)" in
+            Darwin-arm64|Linux-x86_64) ;;
+            *) echo "unsupported runner $(uname -s)-$(uname -m)"; exit 1 ;;
+          esac
+      - name: Style, audit, install, test
+        run: |
+          if [ ! -f Formula/app4-worker.rb ]; then echo "no worker formula yet"; exit 0; fi
+          brew style app4-ai/tap
+          brew audit --strict app4-ai/tap/app4-worker
+          brew install --verbose app4-ai/tap/app4-worker
+          app4-worker --version
+          app4-worker --help > /dev/null
+          brew test app4-ai/tap/app4-worker
+
+  version-order:
+    name: version-order
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: A formula version never goes backwards
+        run: |
+          git fetch origin main --depth=1
+          for f in Formula/app4-cli.rb Formula/app4-worker.rb; do
+            [ -f "$f" ] || continue
+            old=$(git show origin/main:"$f" 2>/dev/null | sed -n 's/^  version "\(.*\)"/\1/p' | head -1 || true)
+            new=$(sed -n 's/^  version "\(.*\)"/\1/p' "$f" | head -1)
+            [ -z "$old" ] && { echo "$f: new formula at $new"; continue; }
+            if [ "$old" != "$new" ] && [ "$(printf '%s\n%s\n' "$old" "$new" | sort -V | tail -1)" != "$new" ]; then
+              echo "$f: $new is older than main's $old"; exit 1
+            fi
+            echo "$f: $old -> $new"
+          done
