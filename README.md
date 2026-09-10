@@ -30,6 +30,7 @@ brew install --cask app4-ai/tap/app4-studio   # after the line above
 |---------------|---------|-----------------------------------|
 | `app4-cli`    | formula | the `app4` command (`app4` is an alias) |
 | `app4-studio` | cask    | `App4 Studio.app`, depends on `app4-cli` |
+| `app4-worker` | formula | the `app4-worker` command and its helpers; depends on `app4-cli` |
 
 Formula and cask files are published here automatically by the release
 pipelines of the respective projects; the tap's CI installs both on every change.
@@ -40,6 +41,7 @@ pipelines of the respective projects; the tap's CI installs both on every change
 brew update
 brew upgrade app4-cli
 brew upgrade --cask app4-studio
+app4-worker update          # a worker upgrades itself through Homebrew, draining first
 ```
 
 The `app4` command does not update itself when installed through Homebrew;
