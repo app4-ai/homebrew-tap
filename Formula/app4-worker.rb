@@ -1,20 +1,20 @@
 class App4Worker < Formula
   desc "App4 Studio worker: runs agent sessions on this machine"
   homepage "https://app4.dev"
-  version "0.1.179"
+  version "0.1.180"
   license "Apache-2.0"
   depends_on "app4-cli"
 
   on_macos do
     on_arm do
-      url "https://s3.app4.studio/app4-studio/smart-studio/workers/studio-v-0.1.179/app4-worker-darwin-arm64.tar.gz"
-      sha256 "54ad44af7965d62a089cab76bb226e106efdd6593620f70352c3d444e3651345"
+      url "https://s3.app4.studio/app4-studio/smart-studio/workers/worker-v-0.1.180/app4-worker-darwin-arm64.tar.gz"
+      sha256 "97a221637111333f394c7f74e9fceddfe4c996f44d7b9811f6a56bceed166777"
     end
   end
   on_linux do
     on_intel do
-      url "https://s3.app4.studio/app4-studio/smart-studio/workers/studio-v-0.1.179/app4-worker-linux-amd64.tar.gz"
-      sha256 "8ec4488231e789ad707778be5173de590aa536387b1935a54be02059dc7dd3a2"
+      url "https://s3.app4.studio/app4-studio/smart-studio/workers/worker-v-0.1.180/app4-worker-linux-amd64.tar.gz"
+      sha256 "65f256a1506ddb239d89de9cdab74471cec273a5eb185fb3992b51848e6c0f71"
     end
   end
 
@@ -34,6 +34,6 @@ class App4Worker < Formula
   end
 
   test do
-    assert_equal "studio-v-#{version}", shell_output("#{bin}/app4-worker --version").strip
+    assert_equal "worker-v-#{version}", shell_output("#{bin}/app4-worker --version").strip
   end
 end
