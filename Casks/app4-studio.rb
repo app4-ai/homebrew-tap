@@ -4,8 +4,8 @@
 # Rendered by `make release:desktop` in app4-smart-studio from
 # smart-studio/desktop/manifest.json. Do not edit by hand.
 cask "app4-studio" do
-  version "0.1.220"
-  sha256 "32882d18d7985c2e94f26384b30bbd032518e34514c5f3e262e4e1a124110ab7"
+  version "0.1.221"
+  sha256 "56716c6340197ac82b4e7cec675da9908db95d5f0ef40441a7dc154f8f1b3f21"
 
   url "https://s3.app4.studio/app4-studio/smart-studio/desktop/App4Studio-#{version}.dmg"
   name "App4 Studio"
