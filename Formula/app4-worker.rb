@@ -1,27 +1,27 @@
 class App4Worker < Formula
   desc "App4 Studio worker: runs agent sessions on this machine"
   homepage "https://app4.dev"
-  version "0.1.259"
+  version "0.1.260"
   license "Apache-2.0"
   depends_on "app4-cli"
 
   on_macos do
     on_arm do
-      url "https://s3.app4.studio/app4-studio/smart-studio/workers/worker-v-0.1.259/app4-worker-darwin-arm64.tar.gz"
-      sha256 "3ded7173ec8dcccc668c097efbf9fcf51700c7e330116633d705e60fe1b3ca0f"
+      url "https://s3.app4.studio/app4-studio/smart-studio/workers/worker-v-0.1.260/app4-worker-darwin-arm64.tar.gz"
+      sha256 "0561bdca4d088bdd170293c13441153c68acd6010cc465f8a9ab3d598f95c7c0"
     end
   end
   on_linux do
     on_intel do
-      url "https://s3.app4.studio/app4-studio/smart-studio/workers/worker-v-0.1.259/app4-worker-linux-amd64.tar.gz"
-      sha256 "8c82a199fabb0873de213792f3c0cae0bce38acb57f114b46cc8475f65532d67"
+      url "https://s3.app4.studio/app4-studio/smart-studio/workers/worker-v-0.1.260/app4-worker-linux-amd64.tar.gz"
+      sha256 "4caab1b0d12081f0d613f4517b05139112e429a16e2afceb4fde49aeb76a8ac4"
     end
   end
 
   def install
     supported = (OS.mac? && Hardware::CPU.arm?) || (OS.linux? && Hardware::CPU.intel?)
     odie "app4-worker ships for Apple Silicon and Linux x86_64 only" unless supported
-    bin.install "app4-worker", "studio-mcp-bridge", "app4-test-runner", "app4-test-runner-pwinstall"
+    bin.install "app4-worker", "agent-exec", "studio-mcp-bridge", "app4-test-runner", "app4-test-runner-pwinstall"
     (pkgshare/"skills").install Dir["skills/*"]
   end
 
