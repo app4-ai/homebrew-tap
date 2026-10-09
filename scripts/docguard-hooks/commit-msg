@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+# commit-msg: process documents live in app4.studio, not in git (docguard).
+# Checks the index together with the message (the removal commit's trailer lives there). Fails closed.
+root=$(git rev-parse --show-toplevel) || exit 1
+checker="$root/scripts/docguard.py"
+if [ ! -f "$checker" ]; then
+	echo "commit-msg: scripts/docguard.py is missing, so process documents cannot be checked; restore it (the guard's installer re-creates it)" >&2
+	exit 1
+fi
+mode=$(git show :.docguard/mode 2>/dev/null | tr -d '[:space:]')
+if [ -z "$mode" ]; then
+	echo "commit-msg: .docguard/mode is missing from the index (pre or post); restore it (the guard's installer re-creates it)" >&2
+	exit 1
+fi
+exec python3 "$checker" --repo "$root" --mode "$mode" --commit-msg "$1"

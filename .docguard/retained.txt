@@ -1,0 +1,1 @@
+# docguard exceptions: files read by code, a build, a test, CI or the site — `glob  # reason`

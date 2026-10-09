@@ -1,0 +1,23 @@
+# Process documents stay out of this repository (docguard). Installed as .github/workflows/docguard.yml.
+name: docguard
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  docguard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: process documents stay out of the repository
+        run: |
+          mode="$(tr -d '[:space:]' < .docguard/mode)"
+          zero=0000000000000000000000000000000000000000
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            python3 scripts/docguard.py --mode "$mode" --range "${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}"
+          elif [ "${{ github.event.before }}" != "$zero" ]; then
+            python3 scripts/docguard.py --mode "$mode" --range "${{ github.event.before }}..${{ github.sha }}"
+          fi
+          python3 scripts/docguard.py --mode "$mode" --tree HEAD
