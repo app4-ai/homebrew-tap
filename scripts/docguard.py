@@ -14,9 +14,10 @@ build, a test, CI or the site).
 --mode pre  (from the freeze to the removal commit): a process path may only be a line of .docguard/baseline.tsv
             with its frozen blob; a commit may delete one only when its message carries the trailer
             `Docs-Moved-To-Studio: 698`; .docguard/baseline.tsv and .docguard/retained.txt change only in that commit.
+            .docguard/mode changes only in a commit with that trailer, in either mode.
 --mode post (after the removal commit): no process path may exist or be added.
---commit-msg checks the index with the message (the commit-msg hook); --range checks every non-merge commit of
-OLD..NEW (CI); --tree checks the whole tree of REV, which also covers merge commits. --list-unmerged prints
+--commit-msg checks the index with the message (the commit-msg hook); --range checks every commit of OLD..NEW (CI),
+a merge commit by what it changes against every parent; --tree checks the whole tree of REV. --list-unmerged prints
 `<branch>\t<path>` for process documents that remote branches not merged into BASE (default origin/main) add.
 Python 3.9+, standard library only.
 This file is copied unchanged into each repository as scripts/docguard.py. Exit 0 clean, 1 refused, 2 usage error.
@@ -147,6 +148,10 @@ def has_trailer(repo, message):
 def judge(changes, mode, cfg, trailer):
     bad = []
     for status, path in changes:
+        if path == MODE:  # flipping the mode would switch the pre-mode checks off: removal commit only, in any mode
+            if status != "A" and not trailer:
+                bad.append((path, "changed outside the removal commit (trailer `%s: %s`)" % (TRAILER, TRAILER_VALUE)))
+            continue
         if path in GUARD_FILES:
             if mode == "pre" and status != "A" and not trailer:
                 bad.append((path, "changed outside the removal commit (trailer `%s: %s`)" % (TRAILER, TRAILER_VALUE)))
@@ -188,7 +193,23 @@ def check_range(repo, spec, mode):
         changes = parse_raw(git(repo, "diff-tree", "-r", "-z", "--root", "--no-commit-id", "--raw", "--no-renames",
                                 "--no-abbrev", c))
         bad += [(p, "%s (commit %s)" % (why, c[:9])) for p, why in judge(changes, mode, cfg, has_trailer(repo, message))]
+    for c in git(repo, "rev-list", "--merges", old + ".." + new).decode().split():
+        message = git(repo, "log", "-1", "--format=%B", c).decode("utf-8", "replace")
+        changes = merge_changes(repo, c)
+        bad += [(p, "%s (merge %s)" % (why, c[:9])) for p, why in judge(changes, mode, cfg, has_trailer(repo, message))]
     return bad
+
+
+def merge_changes(repo, c):
+    """What a merge commit itself changes: the paths that differ from EVERY parent (its combined diff)."""
+    names = git(repo, "diff-tree", "-r", "-z", "--cc", "--name-only", "--no-commit-id", c).decode("utf-8", "replace")
+    found = []
+    for path in sorted({n for n in names.split("\0") if n}):
+        if show(repo, "%s:%s" % (c, path)) is None:
+            found.append(("D", path))
+        else:
+            found.append(("M" if show(repo, "%s^1:%s" % (c, path)) is not None else "A", path))
+    return found
 
 
 def unmerged(repo, base):
