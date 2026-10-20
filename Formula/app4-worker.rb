@@ -1,20 +1,20 @@
 class App4Worker < Formula
   desc "App4 Studio worker: runs agent sessions on this machine"
   homepage "https://app4.dev"
-  version "0.2.2"
+  version "0.2.3"
   license "Apache-2.0"
   depends_on "app4-cli"
 
   on_macos do
     on_arm do
-      url "https://s3.app4.studio/app4-worker/worker-v-0.2.2/app4-worker-darwin-arm64.tar.gz"
-      sha256 "9962d1dee2379c6e0d247d198857c670e3401f6fd667a95fb9136a73d3acca68"
+      url "https://s3.app4.studio/app4-worker/worker-v-0.2.3/app4-worker-darwin-arm64.tar.gz"
+      sha256 "9b7595a24fe6e88792883287aeff71ae7489f696f305344f4abe0462c3414f6d"
     end
   end
   on_linux do
     on_intel do
-      url "https://s3.app4.studio/app4-worker/worker-v-0.2.2/app4-worker-linux-amd64.tar.gz"
-      sha256 "620b48933fcddac3f0d91e50c75a4bd0869409b5b95793022817adcb3c11508e"
+      url "https://s3.app4.studio/app4-worker/worker-v-0.2.3/app4-worker-linux-amd64.tar.gz"
+      sha256 "7b0f81d454f286dc803376041b63f660aaeb839956f8d46b1fb9a939a90bfbd3"
     end
   end
 
