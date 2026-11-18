@@ -7,28 +7,28 @@
 class App4Cli < Formula
   desc "Command-line interface for the App4 platform"
   homepage "https://app4.dev"
-  version "1.139.0"
+  version "1.139.1"
   license "Apache-2.0"
 
   on_macos do
     on_arm do
-      url "https://s3.app4.studio/app4-studio/cli/app4-v1-139-0-darwin-arm64.gz"
-      sha256 "3ddf1bf71b1cf36bb42d48332d292f7fc4db0616b298d904c54aaa88b709febd"
+      url "https://s3.app4.studio/app4-studio/cli/app4-v1-139-1-darwin-arm64.gz"
+      sha256 "73061718dcedf4fef7d0b86e8e6e620b3320c0f97d95e5d1fa6d0e89b900797f"
     end
     on_intel do
-      url "https://s3.app4.studio/app4-studio/cli/app4-v1-139-0-darwin-amd64.gz"
-      sha256 "39fb4e81d6a240a35c7e2554953af2015cd75c17c11ca7a537e6575b83c7dcc4"
+      url "https://s3.app4.studio/app4-studio/cli/app4-v1-139-1-darwin-amd64.gz"
+      sha256 "48536c064e4b09bdbb79102c2f9fd5cdc09647bed9e1e883ac4091ecd88dcd0f"
     end
   end
 
   on_linux do
     on_arm do
-      url "https://s3.app4.studio/app4-studio/cli/app4-v1-139-0-linux-arm64.gz"
-      sha256 "3b26b4f0b0247e32d0076c380d463e3e2151fc9fde6ded24c4b1768cef4de3f6"
+      url "https://s3.app4.studio/app4-studio/cli/app4-v1-139-1-linux-arm64.gz"
+      sha256 "54087639e558f1dc58fcdc03a8096b8b66817f59e305be4aee250328f5f614ca"
     end
     on_intel do
-      url "https://s3.app4.studio/app4-studio/cli/app4-v1-139-0-linux-amd64.gz"
-      sha256 "fde7cdcedcb5d4340f15e7fdb9ab1d1ce15e47e47c599a9e00de7f1a7ca61018"
+      url "https://s3.app4.studio/app4-studio/cli/app4-v1-139-1-linux-amd64.gz"
+      sha256 "789351631135abaaf06b6486c62e9cec7ba860b44e170c9fc61640263804f5ef"
     end
   end
 
